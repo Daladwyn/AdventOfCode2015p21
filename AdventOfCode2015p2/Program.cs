@@ -96,14 +96,40 @@ namespace AdventOfCode2015p2
 
         static void Main(string[] args)
         {
-            var measurements = File.ReadAllLines("C:\\Users\\levch\\Documents\\advent of code\\2015\\p2\\santas helpers wrap measurements.txt");
+            var measurements = File.ReadAllLines("C:\\Users\\christian\\Documents\\advent of code\\2015\\p2\\santas helpers wrap measurements.txt");
             List<PacketMeasurement> christmasPresents = new List<PacketMeasurement>();
+            var amountOfWrapPaper = 0;
             foreach (var measure in measurements)
             {
                 christmasPresents.Add(ConvertStringToMeasurement(measure));
             }
-            Console.WriteLine("Hello World!");
+            foreach (var package in christmasPresents)
+            {
+                amountOfWrapPaper = amountOfWrapPaper + calculatePackageArea(package);
+            }
+            Console.WriteLine(amountOfWrapPaper);
             Console.ReadLine();
+        }
+
+        private static int calculatePackageArea(PacketMeasurement package)
+        {
+            var lengthWidthArea = 2 * package.lenght * package.width;
+            var lengthHeightArea = 2 * package.lenght * package.height;
+            var widthHeightArea = 2 * package.width * package.height;
+            var lowestArea = 0;
+            if ((lengthWidthArea < lengthHeightArea )&&(lengthWidthArea<widthHeightArea))
+            {
+                lowestArea = lengthWidthArea/2;
+            }
+            else if ((lengthHeightArea<lengthWidthArea)&&(lengthHeightArea<widthHeightArea))
+            {
+                lowestArea = lengthHeightArea/2;
+            }
+            else if ((widthHeightArea < lengthWidthArea)&&(widthHeightArea<lengthHeightArea))
+            {
+                lowestArea = widthHeightArea/2;
+            }
+            return (lengthWidthArea + lengthHeightArea + widthHeightArea + lowestArea);
         }
     }
 }
