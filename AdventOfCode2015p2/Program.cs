@@ -96,6 +96,7 @@ namespace AdventOfCode2015p2
 
         static void Main(string[] args)
         {
+            var numberOfParcels = 0;
             var measurements = File.ReadAllLines("C:\\Users\\christian\\Documents\\advent of code\\2015\\p2\\santas helpers wrap measurements.txt");
             List<PacketMeasurement> christmasPresents = new List<PacketMeasurement>();
             var amountOfWrapPaper = 0;
@@ -105,31 +106,38 @@ namespace AdventOfCode2015p2
             }
             foreach (var package in christmasPresents)
             {
-                amountOfWrapPaper = amountOfWrapPaper + calculatePackageArea(package);
+                 amountOfWrapPaper = amountOfWrapPaper + calculatePackageArea(package);
+                numberOfParcels++;
+                //Following two lines is for debuging
+                //Console.WriteLine("packet nr {0} behöver {1} papper.", numberOfParcels, amountOfWrapPaper);
+                //Console.ReadLine();
             }
-            Console.WriteLine(amountOfWrapPaper);
+            Console.WriteLine("Antal packet: {0} ",numberOfParcels);
+            Console.WriteLine("Antal squarefeet papper som behövs: {0} ", amountOfWrapPaper);
             Console.ReadLine();
         }
 
         private static int calculatePackageArea(PacketMeasurement package)
         {
-            var lengthWidthArea = 2 * package.lenght * package.width;
-            var lengthHeightArea = 2 * package.lenght * package.height;
-            var widthHeightArea = 2 * package.width * package.height;
+            var lengthWidthArea = package.lenght * package.width;
+            var lengthHeightArea = package.lenght * package.height;
+            var widthHeightArea = package.width * package.height;
             var lowestArea = 0;
-            if ((lengthWidthArea < lengthHeightArea )&&(lengthWidthArea<widthHeightArea))
+            if ((lengthWidthArea <= lengthHeightArea )&&(lengthWidthArea <= widthHeightArea))
             {
-                lowestArea = lengthWidthArea/2;
+                lowestArea = lengthWidthArea;
             }
-            else if ((lengthHeightArea<lengthWidthArea)&&(lengthHeightArea<widthHeightArea))
+            else if ((lengthHeightArea <= lengthWidthArea)&&(lengthHeightArea <= widthHeightArea))
             {
-                lowestArea = lengthHeightArea/2;
+                lowestArea = lengthHeightArea;
             }
-            else if ((widthHeightArea < lengthWidthArea)&&(widthHeightArea<lengthHeightArea))
+            else if ((widthHeightArea <= lengthWidthArea)&&(widthHeightArea <= lengthHeightArea))
             {
-                lowestArea = widthHeightArea/2;
+                lowestArea = widthHeightArea;
             }
-            return (lengthWidthArea + lengthHeightArea + widthHeightArea + lowestArea);
+            //Following line is for debuging
+            //Console.WriteLine("Areas is {0},{1},{2}, Smallest is {3}", lengthWidthArea, lengthHeightArea, widthHeightArea, lowestArea);
+            return (2 * lengthWidthArea + 2 * lengthHeightArea + 2 * widthHeightArea + lowestArea);
         }
     }
 }
