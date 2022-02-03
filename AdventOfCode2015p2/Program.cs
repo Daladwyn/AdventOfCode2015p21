@@ -100,21 +100,50 @@ namespace AdventOfCode2015p2
             var measurements = File.ReadAllLines("C:\\Users\\christian\\Documents\\advent of code\\2015\\p2\\santas helpers wrap measurements.txt");
             List<PacketMeasurement> christmasPresents = new List<PacketMeasurement>();
             var amountOfWrapPaper = 0;
+            var amountOfRibbon = 0;
             foreach (var measure in measurements)
             {
                 christmasPresents.Add(ConvertStringToMeasurement(measure));
             }
             foreach (var package in christmasPresents)
             {
-                 amountOfWrapPaper = amountOfWrapPaper + calculatePackageArea(package);
+                amountOfWrapPaper = amountOfWrapPaper + calculatePackageArea(package);
                 numberOfParcels++;
                 //Following two lines is for debuging
                 //Console.WriteLine("packet nr {0} behöver {1} papper.", numberOfParcels, amountOfWrapPaper);
                 //Console.ReadLine();
             }
-            Console.WriteLine("Antal packet: {0} ",numberOfParcels);
+            foreach (var package in christmasPresents)
+            {
+                amountOfRibbon = amountOfRibbon + calculateRibbon(package);
+            }
+            Console.WriteLine("Antal packet: {0} ", numberOfParcels);
             Console.WriteLine("Antal squarefeet papper som behövs: {0} ", amountOfWrapPaper);
+            Console.WriteLine("Antal feet som behövs för att slå in presenterna: {0}", amountOfRibbon);
             Console.ReadLine();
+        }
+
+        private static int calculateRibbon(PacketMeasurement package)
+        {
+            var ribbonOfPackage = 0;
+            if ((package.height >= package.width) && (package.height >= package.lenght))
+            {
+                ribbonOfPackage = package.width * 2 + package.lenght * 2;
+            }
+            else if ((package.width >= package.height) && (package.width >= package.lenght))
+            {
+                ribbonOfPackage = package.height * 2 + package.lenght * 2;
+            }
+            else if ((package.lenght >= package.height) && (package.lenght >= package.width))
+            {
+                ribbonOfPackage = package.height * 2 + package.width * 2;
+            }
+            else if ((package.lenght == package.height) && (package.lenght == package.width))
+            {
+                ribbonOfPackage = package.lenght * 4;
+            }
+            ribbonOfPackage = ribbonOfPackage + package.height * package.lenght * package.width;
+            return ribbonOfPackage;
         }
 
         private static int calculatePackageArea(PacketMeasurement package)
@@ -123,15 +152,15 @@ namespace AdventOfCode2015p2
             var lengthHeightArea = package.lenght * package.height;
             var widthHeightArea = package.width * package.height;
             var lowestArea = 0;
-            if ((lengthWidthArea <= lengthHeightArea )&&(lengthWidthArea <= widthHeightArea))
+            if ((lengthWidthArea <= lengthHeightArea) && (lengthWidthArea <= widthHeightArea))
             {
                 lowestArea = lengthWidthArea;
             }
-            else if ((lengthHeightArea <= lengthWidthArea)&&(lengthHeightArea <= widthHeightArea))
+            else if ((lengthHeightArea <= lengthWidthArea) && (lengthHeightArea <= widthHeightArea))
             {
                 lowestArea = lengthHeightArea;
             }
-            else if ((widthHeightArea <= lengthWidthArea)&&(widthHeightArea <= lengthHeightArea))
+            else if ((widthHeightArea <= lengthWidthArea) && (widthHeightArea <= lengthHeightArea))
             {
                 lowestArea = widthHeightArea;
             }
